@@ -12,6 +12,7 @@ import java.io.File;
 import com.microsoft.azure.Azure;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.samples.Utils;
 
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -35,10 +36,10 @@ public final class ManageResourceGroup {
     public static void main(String[] args) {
 
         try {
-            final String rgName = Utils.createRandomName("rgRSMA");
-            final String rgName2 = Utils.createRandomName("rgRSMA");
-            final String resourceTagName = Utils.createRandomName("rgRSTN");
-            final String resourceTagValue = Utils.createRandomName("rgRSTV");
+            final String rgName = ResourceNamer.randomResourceName("rgRSMA", 24);
+            final String rgName2 = ResourceNamer.randomResourceName("rgRSMA", 24);
+            final String resourceTagName = ResourceNamer.randomResourceName("rgRSTN", 24);
+            final String resourceTagValue = ResourceNamer.randomResourceName("rgRSTV", 24);
 
             try {
 
