@@ -4,7 +4,7 @@ platforms: java
 author: alvadb
 ---
 
-# Manage Azure resource group with  Java
+# Manage Azure resource groups with Java
 
 **On this page**
 
@@ -16,7 +16,7 @@ author: alvadb
    - [Delete a resource group](#delete)
  
 <a id="run"></a>
-## Running the sample ##
+## Running the sample
 
 1. Set the environment variable `AZURE_AUTH_LOCATION` with the full path for an [auth file](https://github.com/Azure/azure-sdk-for-java/blob/master/AUTH.md).
 
@@ -38,7 +38,7 @@ mvn clean compile exec:java
 
 The sample starts by creating some name and tag variables that it uses in the various tasks.
 
-```
+```java
 final String rgName = ResourceNamer.randomResourceName("rgRSMA", 24);
 final String rgName2 = ResourceNamer.randomResourceName("rgRSMA", 24);
 final String resourceTagName = ResourceNamer.randomResourceName("rgRSTN", 24);
@@ -47,7 +47,7 @@ final String resourceTagValue = ResourceNamer.randomResourceName("rgRSTV", 24);
 
 Then is signs in to the account using the authentication file.
 
-```
+```java
 final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
 Azure azure = Azure.configure()
@@ -59,7 +59,7 @@ Azure azure = Azure.configure()
 <a id="create"></a>
 ### Create a resource group
 
-```
+```java
 ResourceGroup resourceGroup = azure.resourceGroups()
         .define(rgName)
         .withRegion(Region.US_WEST)
@@ -69,7 +69,7 @@ ResourceGroup resourceGroup = azure.resourceGroups()
 <a id="update"></a>
 ### Update a resource group
 
-```
+```java
 resourceGroup.update()
     .withTag(resourceTagName, resourceTagValue)
     .apply();
@@ -78,14 +78,14 @@ resourceGroup.update()
 <a id="list"></a>
 ### List resource groups
 
-```
+```java
 azure.resourceGroups().list();
 ```
 
 <a id="delete"></a>
 ### Delete a resource group
 
-```
+```java
 azure.resourceGroups().delete(rgName2);
 ```
 
