@@ -4,7 +4,7 @@ platforms: java
 author: alvadb
 ---
 
-#Getting Started with Resources - Manage Resource Group - in Java #
+# Manage Azure resource group with  Java
 
 **On this page**
 
@@ -19,7 +19,6 @@ author: alvadb
 ## Running the sample ##
 
 1. Set the environment variable `AZURE_AUTH_LOCATION` with the full path for an [auth file](https://github.com/Azure/azure-sdk-for-java/blob/master/AUTH.md).
-
 
 2. Clone the repository.
 
