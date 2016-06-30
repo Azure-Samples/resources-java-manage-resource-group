@@ -7,7 +7,7 @@ author: alvadb
 #Getting Started with Resources - Manage Resource Group - in Java #
 
 
-  Azure Resource sample for managing resource groups -
+  Resource: Manage Resource Sample (for 1.0.0-beta2) - demonstrates how to perform common tasks using the Microsoft Azure Resource management service.
    - Create a resource group
    - Update a resource group
    - Create another resource group
