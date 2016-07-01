@@ -1,32 +1,93 @@
 ---
-services: compute
+services: azure-resource-manager
 platforms: java
 author: alvadb
 ---
 
-#Getting Started with Resources - Manage Resource Group - in Java #
+# Manage Azure resource groups with Java
 
+**On this page**
 
-  Resource: Manage Resource Sample (for 1.0.0-beta2) - demonstrates how to perform common tasks using the Microsoft Azure Resource management service.
-   - Create a resource group
-   - Update a resource group
-   - Create another resource group
-   - Export an ARM template
-   - List resource groups
-   - Delete a resource group.
+- [Run the sample](#run)
+- [What is ManageResourceGroups.java doing?](#example)
+   - [Create a resource group](#create)
+   - [Update a resource group](#update)
+   - [List resource groups](#list)
+   - [Delete a resource group](#delete)
  
+<a id="run"></a>
+## Running the sample
 
-## Running this Sample ##
+1. Set the environment variable `AZURE_AUTH_LOCATION` with the full path for an [auth file](https://github.com/Azure/azure-sdk-for-java/blob/master/AUTH.md).
 
-To run this sample:
+2. Clone the repository.
 
-Set the environment variable `AZURE_AUTH_LOCATION` with the full path for an auth file. See [how to create an auth file](https://github.com/Azure/azure-sdk-for-java/blob/master/AUTH.md).
+```
+git clone https://github.com/Azure-Samples/resources-java-manage-resource-group.git
+```
 
-    git clone https://github.com/Azure-Samples/resources-java-manage-resource-group.git
+3. Run the sample
 
-    cd resources-java-manage-resource-group
+```
+cd resources-java-manage-resource-group
+mvn clean compile exec:java
+```
 
-    mvn clean compile exec:java
+<a id="example"></a>
+## What is ManageResourceGroup.java doing?
+
+The sample starts by creating some name and tag variables that it uses in the various tasks.
+
+```java
+final String rgName = ResourceNamer.randomResourceName("rgRSMA", 24);
+final String rgName2 = ResourceNamer.randomResourceName("rgRSMA", 24);
+final String resourceTagName = ResourceNamer.randomResourceName("rgRSTN", 24);
+final String resourceTagValue = ResourceNamer.randomResourceName("rgRSTV", 24);
+```
+
+Then is signs in to the account using the authentication file.
+
+```java
+final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+
+Azure azure = Azure.configure()
+        .withLogLevel(HttpLoggingInterceptor.Level.NONE)
+        .authenticate(credFile)
+        .withDefaultSubscription();
+```
+
+<a id="create"></a>
+### Create a resource group
+
+```java
+ResourceGroup resourceGroup = azure.resourceGroups()
+        .define(rgName)
+        .withRegion(Region.US_WEST)
+        .create();
+```
+
+<a id="update"></a>
+### Update a resource group
+
+```java
+resourceGroup.update()
+    .withTag(resourceTagName, resourceTagValue)
+    .apply();
+```
+
+<a id="list"></a>
+### List resource groups
+
+```java
+azure.resourceGroups().list();
+```
+
+<a id="delete"></a>
+### Delete a resource group
+
+```java
+azure.resourceGroups().delete(rgName2);
+```
 
 ## More information ##
 
