@@ -1,7 +1,7 @@
 ---
 services: azure-resource-manager
 platforms: java
-author: alvadb
+author: selvasingh
 ---
 
 #Getting Started with Resources - Manage Resource Group - in Java #
