@@ -1,7 +1,7 @@
 ---
 services: Resources
 platforms: java
-author: alvadb
+author: selvasingh
 ---
 
 #Getting Started with Resources - Manage Resource Group - in Java #
