@@ -8,7 +8,7 @@ description: "Getting Started with Resources - Manage Resource Group - in Java"
 urlFragment: resources-java-manage-resource-group
 ---
 
-# Getting Started with Resources - Manage Resource Group - in Java #
+# Manage Azure Resource Groups (Java)
 
 
   Azure Resource sample for managing resource groups -
