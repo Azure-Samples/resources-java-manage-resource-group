@@ -4,11 +4,12 @@ languages:
 - java
 products:
 - azure
-description: "Getting Started with Resources - Manage Resource Group - in Java"
-urlFragment: resources-java-manage-resource-group
+extensions:
+- services: Resources
+- platforms: java
 ---
 
-# Manage Azure Resource Groups (Java)
+# Getting Started with Resources - Manage Resource Group - in Java #
 
 
   Azure Resource sample for managing resource groups -
