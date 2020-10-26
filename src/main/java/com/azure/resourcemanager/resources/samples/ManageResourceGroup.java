@@ -1,18 +1,17 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-package com.microsoft.azure.management.resources.samples;
+package com.azure.resourcemanager.resources.samples;
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.rest.LogLevel;
-
-import java.io.File;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.samples.Utils;
 
 /**
  * Azure Resource sample for managing resource groups -
@@ -26,14 +25,15 @@ import java.io.File;
 public final class ManageResourceGroup {
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     *
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String rgName = SdkContext.randomResourceName("rgRSMA", 24);
-        final String rgName2 = SdkContext.randomResourceName("rgRSMA", 24);
-        final String resourceTagName = SdkContext.randomResourceName("rgRSTN", 24);
-        final String resourceTagValue = SdkContext.randomResourceName("rgRSTV", 24);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgRSMA", 24);
+        final String rgName2 = Utils.randomResourceName(azureResourceManager, "rgRSMA", 24);
+        final String resourceTagName = Utils.randomResourceName(azureResourceManager, "rgRSTN", 24);
+        final String resourceTagValue = Utils.randomResourceName(azureResourceManager, "rgRSTV", 24);
         try {
 
 
@@ -42,7 +42,7 @@ public final class ManageResourceGroup {
 
             System.out.println("Creating a resource group with name: " + rgName);
 
-            ResourceGroup resourceGroup = azure.resourceGroups().define(rgName)
+            ResourceGroup resourceGroup = azureResourceManager.resourceGroups().define(rgName)
                     .withRegion(Region.US_WEST)
                     .create();
 
@@ -66,7 +66,7 @@ public final class ManageResourceGroup {
 
             System.out.println("Creating another resource group with name: " + rgName2);
 
-            azure.resourceGroups().define(rgName2)
+            azureResourceManager.resourceGroups().define(rgName2)
                     .withRegion(Region.US_WEST)
                     .create();
 
@@ -78,7 +78,7 @@ public final class ManageResourceGroup {
 
             System.out.println("Listing all resource groups");
 
-            for (ResourceGroup rGroup : azure.resourceGroups().list()) {
+            for (ResourceGroup rGroup : azureResourceManager.resourceGroups().list()) {
                 System.out.println("Resource group: " + rGroup.name());
             }
 
@@ -88,25 +88,19 @@ public final class ManageResourceGroup {
 
             System.out.println("Deleting resource group: " + rgName2);
 
-            azure.resourceGroups().beginDeleteByName(rgName2);
+            azureResourceManager.resourceGroups().beginDeleteByName(rgName2);
             return true;
-        } catch (Exception f) {
-
-            System.out.println(f.getMessage());
-            f.printStackTrace();
-
         } finally {
 
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
                 g.printStackTrace();
             }
         }
-        return false;
     }
 
     /**
@@ -119,14 +113,18 @@ public final class ManageResourceGroup {
             //=================================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(LogLevel.NONE)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            AzureResourceManager azureResourceManager = AzureResourceManager
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
