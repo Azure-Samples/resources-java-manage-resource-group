@@ -5,8 +5,8 @@ languages:
 products:
 - azure
 extensions:
-  services: Resources
-  platforms: java
+- services: Resources
+- platforms: java
 ---
 
 # Getting Started with Resources - Manage Resource Group - in Java #
